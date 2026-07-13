@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeCAD Releases</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta21/dist/css/tabler.min.css" rel="stylesheet"
+        integrity="sha384-ax+InU0er6rXAR+gtVccDRdkJQW9pRbxVjR3Wvu4AmWOqEm01WgBNvz2zfCetPLz" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css" rel="stylesheet"
+        integrity="sha384-XAeMOW3g/ahgKWjRcH7Xp+LVEQ/hkKrV0zkAUTnFwlaWK1aXfd9vVufdwqr/836i" crossorigin="anonymous">
+    <style>
+    {% include "style.css" %}
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-wrapper">
+            <div class="hero">
+                <div class="container-xl">
+                    <div class="d-flex align-items-center gap-3">
+                        {% include 'logo.svg' %}
+                        <div>
+                            <h1>FreeCAD Releases</h1>
+                            <p>Browse and download FreeCAD builds for your platform.</p>
+                            <div class="meta">Last updated: {{ generated_at }} UTC</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-xl">
+                <ul class="nav nav-tabs mb-4" id="platformTabs" role="tablist">
+                    {% for pkey, plat in platforms.items() %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {{ 'active' if loop.first }}" data-target="#tab-{{ pkey }}"
+                            type="button" role="tab" data-platform-tab="{{ pkey }}">
+                            <i class="ti ti-{{ plat.icon }} me-1"></i>{{ plat.label }}
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content">
+                    {% for pkey, plat in platforms.items() %}
+                    <div class="tab-pane {{ 'active show' if loop.first }}" id="tab-{{ pkey }}" role="tabpanel">
+                        <div class="arch-pills">
+                            <div class="btn-group" role="group" aria-label="Architecture">
+                                {% for akey in plat.arch_order %}
+                                <button class="btn btn-outline-primary btn-sm {{ 'active' if loop.first }}"
+                                    data-arch="{{ akey }}">{{ plat.arches[akey].label }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% for akey in plat.arch_order %}
+                        {% set arch = plat.arches[akey] %}
+                        <div data-arch-content="{{ akey }}" class="{{ '' if loop.first else 'd-none' }}">
+                            <div class="row g-3 mb-3">
+                                {% if arch.stable %}
+                                    {% set item_stable = true %}
+                                    {% set item_rc = false %}
+                                    {% set item_tag = arch.stable_tag %}
+                                    {% set item_date = arch.stable_date %}
+                                    {% set item = arch.stable %}
+                                    {% include 'card.html.j2' %}
+                                {% endif %}
+                                {% if arch.rc %}
+                                    {% set item_stable = false %}
+                                    {% set item_rc = true %}
+                                    {% set item_tag = arch.rc_tag %}
+                                    {% set item_date = arch.rc_date %}
+                                    {% set item = arch.rc %}
+                                    {% include 'card.html.j2' %}
+                                {% endif %}
+                                {% if arch.weekly %}
+                                    {% set item_stable = false %}
+                                    {% set item_rc = false %}
+                                    {% set item_tag = arch.weekly_tag %}
+                                    {% set item_date = arch.weekly_date %}
+                                    {% set item = arch.weekly %}
+                                    {% include 'card.html.j2' %}
+                                {% endif %}
+                            </div>
+                            {% if arch.history %}
+                            {% include 'history.html.j2' %}
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <footer class="mt-4 mb-4 text-center text-muted small">
+                    Generated by FreeCAD Releases Index Generator &middot;
+                    Data from <a href="https://github.com/FreeCAD/FreeCAD/releases" target="_blank"
+                        rel="noopener noreferrer">GitHub Releases</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        {% include "client.js" %}
+    </script>
+</body>
+
+</html>

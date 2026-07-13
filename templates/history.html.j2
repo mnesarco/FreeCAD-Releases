@@ -1,0 +1,48 @@
+<details class="mt-3">
+    <summary class="btn btn-ghost-secondary btn-sm" style="list-style:none;">
+        <i class="ti ti-history me-1"></i>Historical builds ({{ arch.history | length }})
+        <i class="ti ti-chevron-down ms-1"></i>
+    </summary>
+    <div class="table-responsive mt-2">
+        <table class="table table-sm table-vendor table-hover">
+            <thead>
+                <tr>
+                    <th class="text-nowrap">Date / Tag</th>
+                    <th class="text-center">SHA256</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in arch.history %}
+                <tr>
+                    <td class="text-nowrap">
+                        <a href="{{ entry.asset.url }}"
+                            class="btn btn-icon btn-ghost-primary btn-sm" target="_blank"
+                            rel="noopener" title="Download"><i
+                                class="ti ti-download"></i><strong>{{ entry.asset.name }}</strong></a>
+                        <br><span class="text-muted small">{{ entry.date | fmt_date }}</span>
+                    </td>
+                    <td class="text-center">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            {% if entry.asset.sha256_url %}
+                            <a href="{{ entry.asset.sha256_url | e }}"
+                                class="btn btn-icon btn-ghost-secondary btn-sm"
+                                target="_blank" rel="noopener" title="SHA256 file"><i
+                                    class="ti ti-file-text"></i></a>
+                            {% endif %}
+                            {% if entry.asset.sha256 %}
+                            <button class="btn btn-icon btn-ghost-secondary btn-sm"
+                                onclick="copySHA('{{ entry.asset.sha256 }}', this)"
+                                title="Copy SHA256"><i class="ti ti-copy"></i></button>
+                            <code
+                                class="small text-muted ms-1">{{ entry.asset.sha256 | short_sha256 }}</code>
+                            {% else %}
+                            <span class="text-muted small">&mdash;</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</details>

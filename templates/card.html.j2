@@ -1,0 +1,50 @@
+<div class="col-md-6">
+    <div class="card h-100 {% if item_stable %}border-primary{% endif %}">
+        <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center mb-2">
+                <span class="avatar" style="background: var(--tblr-primary-lt)"><i
+                        class="ti ti-{{ plat.icon }}"></i></span>
+                <div class="ms-3">
+                    <h4 class="mb-0">{{ item_tag }}</h4>
+                    <div class="text-muted small">{{ item_date }}</div>
+                </div>
+                {% if item_stable %}
+                    <div class="ms-auto"><span class="badge bg-green-lt">Stable</span></div>
+                {% elif item_rc %}
+                    <div class="ms-auto"><span class="badge bg-yellow-lt">Release Candidate</span></div>
+                {% else %}
+                    <div class="ms-auto"><span class="badge bg-orange-lt">Pre-release</span></div>
+                {% endif %}
+            </div>
+            <div class="text-muted small text-truncate mb-2"
+                title="{{ item.name | e }}">{{ item.name | e }}</div>
+            <div class="mb-2">
+                <strong>{{ item.size | format_size }}</strong>
+                {% if item.download_count %}
+                    <span class="text-muted small">({{ item.download_count | format_count }})</span>
+                {% endif %}
+            </div>
+            <div class="mt-auto d-flex gap-2 flex-wrap">
+                <a href="{{ item.url }}" class="btn btn-primary btn-sm"
+                    target="_blank" rel="noopener"><i
+                        class="ti ti-download me-1"></i>Download</a>
+                {% if item.sha256_url %}
+                <a href="{{ item.sha256_url | e }}"
+                    class="btn btn-outline-secondary btn-icon btn-sm" target="_blank"
+                    rel="noopener" title="Download SHA256"><i
+                        class="ti ti-file-text"></i></a>
+                {% endif %}
+                {% if item.sha256 %}
+                <button class="btn btn-outline-secondary btn-icon btn-sm"
+                    onclick="copySHA('{{ item.sha256 }}')" title="Copy SHA256"><i
+                        class="ti ti-copy"></i></button>
+                {% endif %}
+            </div>
+            {% if item.sha256 %}
+            <div class="mt-2" title="{{ item.sha256 }}">
+                <code class="small text-muted user-select-all">{{ item.sha256 | short_sha256 }}</code>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

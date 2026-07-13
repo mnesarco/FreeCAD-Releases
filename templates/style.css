@@ -1,0 +1,123 @@
+:root {
+    --tblr-primary: #418FDE;
+    --tblr-primary-rgb: 65, 143, 222;
+    --tblr-primary-lt: rgba(65, 143, 222, 0.12);
+    --tblr-body-bg: #15171a;
+    --tblr-bg-surface: #1e2126;
+}
+
+.page {
+    --tblr-page-bg: #15171a;
+}
+
+.hero {
+    background: linear-gradient(135deg, #1F425C 0%, #152b3d 50%, #0d1f2c 100%);
+    padding: 2.5rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(65, 143, 222, 0.15);
+}
+
+.hero h1 {
+    color: #fff;
+    margin: 0;
+    font-weight: 700;
+}
+
+.hero p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0.25rem 0 0;
+    font-size: 1.1rem;
+}
+
+.hero .meta {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: 600;
+    border-bottom-color: var(--tblr-primary) !important;
+}
+
+.card {
+    transition: box-shadow 0.2s, border-color 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.3);
+    border-color: rgba(65, 143, 222, 0.2);
+}
+
+.font-monospace {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.user-select-all {
+    -webkit-user-select: all;
+    user-select: all;
+}
+
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+}
+
+.toast {
+    background: #1e2126;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-ghost-primary {
+    color: var(--tblr-primary);
+}
+
+.btn-ghost-primary:hover {
+    background: var(--tblr-primary-lt);
+    color: #6aaff0;
+}
+
+.btn-ghost-secondary {
+    color: var(--tblr-secondary);
+}
+
+.btn-ghost-secondary:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.table {
+    --tblr-table-color: #d4d7dc;
+}
+
+.card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+a:not(.btn) {
+    color: #6aaff0;
+}
+
+a:not(.btn):hover {
+    color: #8fc5ff;
+}
+
+code {
+    background: rgba(65, 143, 222, 0.1);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+summary {
+    cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+    color: var(--tblr-primary);
+}
+
+.arch-pills {
+    margin-bottom: 1.25rem;
+}

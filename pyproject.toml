@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "freecad-releases"
+version = "1.0.0"
+description = "Generate a static HTML dashboard for FreeCAD releases"
+requires-python = ">=3.11"
+dependencies = ["jinja2>=3.1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/freecad_releases"]
+
+[project.scripts]
+generate = "freecad_releases.__main__:main"

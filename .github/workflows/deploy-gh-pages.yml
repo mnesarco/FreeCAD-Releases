@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Generate index.html
+        run: uv run generate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          cp dist/index.html /tmp/index.html
+
+          if git fetch origin gh-pages:gh-pages 2>/dev/null; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
+
+          git rm -rf . 2>/dev/null || true
+
+          cp /tmp/index.html .
+          git add index.html
+          git diff --cached --quiet || git commit -m "Update index.html $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push origin gh-pages
