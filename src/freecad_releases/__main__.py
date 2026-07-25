@@ -241,22 +241,23 @@ def build_platform_data(
     for plat_key, config in PLATFORM_CONFIG.items():
         arches = {}
         for arch in config["arches"]:
-            stable_asset = (
-                pick_asset(stable_releases[0], [arch["stable_key"]])
-                if stable_releases
-                else None
-            )
+            stable_asset = None
+            stable_release = None
+            if stable_releases:
+                for rel in stable_releases:
+                    asset = pick_asset(rel, [arch["stable_key"]])
+                    if asset:
+                        stable_asset = asset
+                        stable_release = rel
+                        break
+
             weekly_asset = (
                 pick_asset(weekly_releases[0], arch["weekly_keys"])
                 if weekly_releases
                 else None
             )
 
-            stable_tag = (
-                stable_releases[0]["tag"]
-                if (stable_releases and stable_asset)
-                else None
-            )
+            stable_tag = stable_release["tag"] if stable_release else None
             weekly_tag = (
                 weekly_releases[0]["tag"]
                 if (weekly_releases and weekly_asset)
@@ -301,8 +302,8 @@ def build_platform_data(
                 "label": arch["label"],
                 "stable": stable_asset,
                 "stable_tag": stable_tag,
-                "stable_date": fmt_date(stable_releases[0]["date"])
-                if (stable_releases and stable_asset)
+                "stable_date": fmt_date(stable_release["date"])
+                if stable_release
                 else None,
                 "rc": rc_asset,
                 "rc_tag": rc_tag,
